@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.io.DataInputStream;
 
 public class EchoClient {
 	public static final int PORT_NUMBER = 6013;
@@ -17,12 +18,14 @@ public class EchoClient {
 		Socket socket = new Socket("localhost", PORT_NUMBER);
 		InputStream socketInputStream = socket.getInputStream();
 		OutputStream socketOutputStream = socket.getOutputStream();
-		int readByte;
-		while ((readByte = System.in.read()) != -1) {
-			socketOutputStream.write(readByte);
-			int socketByte = socketInputStream.read();
-			System.out.write(socketByte);
-		}
+		Thread t0 = new Thread() { //Something with a thead.
+			public void run() {
+				// Need a try maybe
+				// also a catch
+				// need to use socket.shutdownOutput(); per peters hints.
+				// two threads to read up and down. fun stuff going to bed now. 
+			}
+		};
 		System.out.flush();
 	}
 }
