@@ -1,5 +1,7 @@
 package echoserver;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +17,7 @@ public class EchoServer {
 	}
 
 	private void start() throws IOException, InterruptedException {
+		//Add a pool somehow
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		while (true) {
 			Socket socket = serverSocket.accept();
@@ -26,4 +29,7 @@ public class EchoServer {
 			}
 		}
 	}
+	//Looks like implements Runnable is a possible route. Needs a run, and each run will
+	//be its own thread. So while loop needs to changed in start, and most over into the 
+	//new class.
 }
