@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.io.DataInputStream;
 
 public class EchoClient {
 	public static final int PORT_NUMBER = 6013;
@@ -17,10 +16,11 @@ public class EchoClient {
 	private void start() throws IOException {
 		// auto changed to final because eclipse said
 		final Socket getsocket = new Socket("localhost", PORT_NUMBER);
-		InputStream socketInData = getsocket.getInputStream();
+		// auto changed to final because eclipse said
+		final InputStream socketInData = getsocket.getInputStream();
 		// auto changed to final because eclipse said
 		final OutputStream socketOutData = getsocket.getOutputStream();
-		Thread upThread = new Thread() { //Something with a thead.
+		Thread upThread = new Thread() { //Something with a thread.
 			public void run() {
 				int input;
 				try {
@@ -39,13 +39,18 @@ public class EchoClient {
 		upThread.start();
 		Thread downThread = new Thread() {
 			public void run() {
-				int input;
+				int inputByte;
 				try {
-					while((input = ))
-					
+					while((inputByte = socketInData.read()) !=-1){
+						System.out.write(inputByte);
+					}
+					System.out.flush();
+					getsocket.close();
 				}
-			}
+				catch(IOException noGO){
+					noGO.printStackTrace();
+				}
 		}
-		System.out.flush();
-	}
-}
+	};
+	downThread.start();
+}}
