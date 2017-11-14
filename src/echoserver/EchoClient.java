@@ -15,17 +15,37 @@ public class EchoClient {
 	}
 
 	private void start() throws IOException {
-		Socket socket = new Socket("localhost", PORT_NUMBER);
-		InputStream socketInputStream = socket.getInputStream();
-		OutputStream socketOutputStream = socket.getOutputStream();
-		Thread t0 = new Thread() { //Something with a thead.
+		// auto changed to final because eclipse said
+		final Socket getsocket = new Socket("localhost", PORT_NUMBER);
+		InputStream socketInData = getsocket.getInputStream();
+		// auto changed to final because eclipse said
+		final OutputStream socketOutData = getsocket.getOutputStream();
+		Thread upThread = new Thread() { //Something with a thead.
 			public void run() {
-				// Need a try maybe
-				// also a catch
-				// need to use socket.shutdownOutput(); per peters hints.
-				// two threads to read up and down. fun stuff going to bed now. 
+				int input;
+				try {
+					while ((input = System.in.read()) !=-1) {
+						socketOutData.write(input);
+					}
+					socketOutData.flush();
+					//Based on Peters hits.
+					getsocket.shutdownOutput();
+				}
+				catch(IOException noGo) {
+					noGo.printStackTrace();
+				}
 			}
 		};
+		upThread.start();
+		Thread downThread = new Thread() {
+			public void run() {
+				int input;
+				try {
+					while((input = ))
+					
+				}
+			}
+		}
 		System.out.flush();
 	}
 }
