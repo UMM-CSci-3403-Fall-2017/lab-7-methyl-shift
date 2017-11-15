@@ -1,1 +1,3 @@
-The single thread is slower at with big amounts of clietns, as was expected. But what was instrting was that depeind on what computer is being use as the host/client since its all self contained right now, a 2 core hard a harder time handeling larger request vs an 8 core, also other things come into account.
+- The single thread is slower at with big amounts of clients, as was expected. 
+- But what was interesting was that depend on what computer is being used as the host/client since it's all self contained right now
+- 2 core hard a harder time handling larger request vs an 8 core, also other things come into account.
