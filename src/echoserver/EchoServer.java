@@ -19,25 +19,39 @@ public class EchoServer {
 	private void start() throws IOException, InterruptedException {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		//  Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available, and uses the provided ThreadFactory to create new threads when needed.
-		ExecutorService pools = new Executors.newCachedThreadPool() ;
+		ExecutorService pools = Executors.newCachedThreadPool();
 		
-		while (true) {
+		try{
 			// Needs sockets from the CachedPool.
 			Socket impactSocket = serverSocket.accept();
-			//need to point to an Runnalbe thing...
+			ThreadRipper thread = new ThreadRipper(impactSocket);
+			pools.submit(thread);
+			}
+		finally {
+			serverSocket.close();
 			}
 		}
-	
-	
-	//Looks like implements Runnable is a possible route. Needs a run, and each run will
-	//be its own thread. So while loop needs to changed in start, and most over into the 
-	//new class.
-
-//Socket socket = serverSocket.accept();
-//InputStream inputStream = socket.getInputStream();
-//OutputStream outputStream = socket.getOutputStream();
-//int b;
-//while ((b = inputStream.read()) != -1) {
-//	outputStream.write(b);
-//}
+	private class ThreadRipper implements Runnable{
+		private Socket socket;
+		public ThreadRipper(Socket socket) {
+			this.socket = socket;
+		}
+		@Override
+		//Eclipse added after Runnable was added into class.
+		public void run() {
+			try {
+				InputStream inStream = socket.getInputStream();
+				OutputStream outStream = socket.getOutputStream();
+				int holder;
+				while((holder = inStream.read()) != -1) {
+					outStream.write(holder);
+				}
+				outStream.flush();
+				socket.close();
+			}
+			catch(IOException noGo) {
+				noGo.printStackTrace();
+			}
+		}
+	}
 }
