@@ -20,24 +20,14 @@ public class EchoServer {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		//  Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available, and uses the provided ThreadFactory to create new threads when needed.
 		ExecutorService pools = Executors.newCachedThreadPool();
-		//Before this was a while loop, but with a true, but that is bad coding practice. 
-		try{
+		
+		while (true) {
 			// Needs sockets from the CachedPool.
 			Socket impactSocket = serverSocket.accept();
 			ThreadRipper thread = new ThreadRipper(impactSocket);
 			pools.submit(thread);
 			}
-		//This closes the serverSocket.
-		finally {
-			if(serverSocket != null) {
-				serverSocket.close();
-				}
-			else {
-				System.out.println("failed to open serverSocket");
-				}
-			}
-	}
-		
+		}
 	private class ThreadRipper implements Runnable{
 		private Socket socket;
 		public ThreadRipper(Socket socket) {
@@ -61,4 +51,5 @@ public class EchoServer {
 			}
 		}
 	}
+
 }
